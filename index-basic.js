@@ -1,0 +1,60 @@
+/*No ejecutar js , hasta que HTML cargue completo*/
+document.addEventListener('DOMContentLoaded', () => {
+
+    const title = document.getElementById('title');
+    const description = document.getElementById('description');
+    const table = document.getElementById('table');
+    const alert = document.getElementById('alert');
+    const btn = document.getElementById('add');
+    let id = 1;
+
+
+    /*Funcion para evitar Que al darle clik a un boton nos ignore el icono*/
+    const removeTodo = (id)=>{
+       
+        document.getElementById(id).remove();
+    }
+
+
+    function addTodo() {
+        if (title.value === '' || description.value === '') {
+            alert.classList.remove('d-none');
+            alert.innerText = 'Por favor ingresas titulo y descripcion';
+            return;
+        }
+
+        alert.classList.add('d-none');
+
+
+        /*INSERTAR COLUMNA DE LA TABLA*/
+        const row = table.insertRow();
+        row.setAttribute('id' , id++);
+        row.innerHTML = `
+            <td>${title.value}</td>
+            <td>${description.value}</td>
+            <td class="text-center">
+             <input type="checkbox">
+          
+             <td class="text-right">
+                <button class="btn btn-primary mb-1">
+                    <i class="fa fa-pencil"></i>
+                </button>              
+            </td>      
+        `;
+
+        //BOTON BORRAR DE LA COLUMNA DE LA TABLA
+        const removeBtn = document.createElement('button');
+        removeBtn.classList.add('btn' , 'btn-danger' , 'mb-1' , 'ml-1');
+        removeBtn.innerHTML = '<i class="fa fa-trash"></i>';
+
+        removeBtn.onclick = function(e){
+            removeTodo(row.getAttribute('id'));
+        };
+
+        row.children[3].appendChild(removeBtn);
+
+
+    };
+    /*EJECUTAR CUANDO TOQUE EL BOTON*/
+    btn.onclick = addTodo;
+});
